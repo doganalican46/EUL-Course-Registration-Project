@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/login_style.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/colors.css">
+    <!-- For icons -->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+
+<body style="background-color: lightcyan;">
+    <div class="container" style="background-color: white;">
+        <div class="row">
+            <div class="col">
+                <form id="loginForm" method="post" action="register.php">
+                    <div class="card-header">
+                        <div class="title">
+                            <h2 id="welcome">Welcome!</h2>
+                        </div>
+                        <div class="page-description">
+                            <h4>EUL Course Registration and Curriculum Management System</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="image">
+                                    <img src="images/eul_logo.png" alt="EUL-Logo" id="eul_logo">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <h6 id="loginform-tittle">Login Form</h6>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username"><i class="fa-solid fa-user"></i> Username:</label>
+                                    <input class="form-control" type="text" placeholder="Enter your username..."
+                                        id="username" name="username" required autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label" for="password"><i class="fa-solid fa-lock"></i>
+                                        Password:</label>
+                                    <div class="password-input-container">
+                                        <input type="password" placeholder="Enter your password..." class="form-control"
+                                            id="password" name="password" required autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="form-group">
+                            <button class="btn-primary" type="submit" name="loginbtn">LOG IN</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    sessionStorage.removeItem("loggedOut");
+    const loginForm = document.getElementById("loginForm");
+    loginForm.addEventListener("submit", function (event) {
+        event.preventDefault(); 
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", "student.xml", true);
+        xhr.responseType = "document"; 
+        // Set up a callback function to handle the server response
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    // Request successful, process the XML response
+                    const xmlDoc = xhr.responseXML;
+                    const students = xmlDoc.getElementsByTagName("Student");
+                    let authenticated = false;
+                    let studentInfo = {};
+                    // Iterate over the students and check for a match
+                    for (let i = 0; i < students.length; i++) {
+                        const student = students[i];
+                        const studentNo = student.getElementsByTagName("StudentNo")[0].textContent;
+                        const name = student.getElementsByTagName("Name")[0].textContent;
+                        const surname = student.getElementsByTagName("Surname")[0].textContent;
+                        const program = student.getElementsByTagName("Program")[0].textContent;
+                        if (surname === username && studentNo === password) {
+                            authenticated = true;
+                            studentInfo = {
+                                studentNo: studentNo,
+                                name: name,
+                                surname: surname,
+                                program: program
+                            };
+                            break;
+                        }
+                    }
+                    if (authenticated) {
+                        // Authentication successful
+                        const queryString = Object.keys(studentInfo).map(key => key + '=' + encodeURIComponent(studentInfo[key])).join('&');
+                        const url = "register.php?" + queryString;
+                        window.location.href = url;
+                    } else {
+                        // Authentication failed
+                        alert("Invalid username or password");
+                    }
+                } else {
+                    console.log("Error: " + xhr.status);
+                }
+            }
+        };
+        xhr.send();
+    });
+</script>
+
+</html>

@@ -1,0 +1,32 @@
+/* CSS for colors */
+.color-primary {
+    color: #0d6efd;
+}
+
+.color-secondary {
+    color: #6c757d;
+}
+
+.color-success {
+    color: #198754;
+}
+
+.color-info {
+    color: #0dcaf0;
+}
+
+.color-warning {
+    color: #ffc107;
+}
+
+.color-danger {
+    color: #dc3545;
+}
+
+.color-dark {
+    color: #212529;
+}
+
+.color-white {
+    color: #fff;
+}

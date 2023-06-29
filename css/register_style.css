@@ -1,0 +1,134 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: lightblue;
+}
+
+.logo img {
+    width: 100px;
+    height: auto;
+    border-radius: 50%;
+}
+
+.page-title {
+    text-align: center;
+    font-size: xx-large;
+}
+
+.logout-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 50px;
+}
+
+
+.section {
+    padding: 40px;
+    margin-bottom: 20px;
+}
+
+.section-profile {
+    display: flex;
+    align-items: center;
+}
+
+.profile .profile-image img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.information-label {
+    display: block;
+    margin-bottom: 10px;
+    padding: 10px;
+}
+
+.section-course-selection .card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.card-header {
+    margin: 0;
+    font-size: 24px;
+}
+
+.card-body {
+    margin-top: 20px;
+}
+
+.course-list label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.course-list select {
+    width: 100%;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+.card-footer {
+    margin-top: 20px;
+    text-align: right;
+}
+
+
+.section-selected-courses .card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.section-selected-courses .card-body ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+.section-comment .card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.section-comment label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.section-comment textarea {
+    width: 100%;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+
+#selectedCoursesTable {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#selectedCoursesTable th,
+#selectedCoursesTable td {
+    border: 1px solid black;
+    padding: 8px;
+}
+
+#selectedCoursesTable th {
+    background-color: #f2f2f2;
+}

@@ -1,0 +1,674 @@
+<!-- login.html start -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+
+
+    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="css/login_style.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/colors.css">
+    <script src="js/script.js"></script>
+
+
+    <!-- For icons -->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+
+<body style="background-color: lightcyan;">
+
+    <div class="container" style="background-color: white;">
+        <div class="row">
+            <div class="col">
+                <form id="loginForm" method="post" action="register.php">
+                    <div class="card-header">
+                        <div class="title">
+                            <h2 id="welcome">Welcome!</h2>
+                        </div>
+                        <div class="page-description">
+                            <h4>EUL Course Registration and Curriculum Management System</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <div class="image">
+                                    <img src="images/eul_logo.png" alt="EUL-Logo" id="eul_logo">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <h6 id="loginform-tittle">Login Form</h6>
+                                </div>
+                                <div class="form-group">
+                                    <label for="username"><i class="fa-solid fa-user"></i> Username:</label>
+                                    <input class="form-control" type="text" placeholder="Enter your username..."
+                                        id="username" name="username" required autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label" for="password"><i class="fa-solid fa-lock"></i>
+                                        Password:</label>
+                                    <input type="password" placeholder="Enter your password..." class="form-control"
+                                        id="password" name="password" required autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="form-group">
+                            <button class="btn-primary" type="submit" name="loginbtn">LOG IN</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<!-- login.html end -->
+//======================================================================//
+
+<!-- register.php start -->
+<?php
+include("db.php");
+
+
+// Retrieve the student information from the query parameters
+$name = isset($_GET['name']) ? $_GET['name'] : '';
+$surname = isset($_GET['surname']) ? $_GET['surname'] : '';
+$studentNo = isset($_GET['studentNo']) ? $_GET['studentNo'] : '';
+$program = isset($_GET['program']) ? $_GET['program'] : '';
+
+
+if (isset($_POST['logoutbtn'])) {
+    header("Location: login.html");
+    exit();
+}
+
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require 'PHPMailer/Exception.php';
+require 'PHPMailer/PHPMailer.php';
+require 'PHPMailer/SMTP.php';
+
+if (isset($_POST['submitComment'])) {
+    $name = htmlentities($_POST['name']);
+    $email = htmlentities($_POST['email']);
+    $subject = htmlentities($_POST['subject']);
+    $message = htmlentities($_POST['comment']);
+
+    $mail = new PHPMailer(true);
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'alicanalican4141@gmail.com';
+    $mail->Password = 'ddbrgvaeutlqwcxo';
+    $mail->Port = 465;
+    $mail->SMTPSecure = 'ssl';
+    $mail->isHTML(true);
+    $mail->setFrom($email, $name);
+    $mail->addAddress($email);
+    $mail->Subject = ("$email ($subject)");
+    $mail->Body = $message;
+    $mail->send();
+
+    try {
+        $mail->send();
+        echo '<script>alert("Mail sent successfully!");</script>';
+    } catch (Exception $e) {
+        echo '<script>alert("Failed to send email!");</script>';
+    }
+}
+
+
+?>
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Page</title>
+
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/colors.css">
+    <link rel="stylesheet" href="css/register_style.css">
+
+    <script src="js/script.js"></script>
+
+    <!-- For icons -->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="images/eul_logo.png" alt="EUL_logo" id="eul_logo">
+        </div>
+        <div class="page-tittle">
+            <h4> EUL Course Registration and Curriculum Management System</h4>
+        </div>
+        <div class="logout">
+
+            <form action="" method="post">
+                <button class="logout-button" name="logoutbtn" type="submit">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="section section-profile">
+        <div class="profile profile-image">
+            <img src="images/student-image.png" alt="Profile Image">
+        </div>
+
+        <div class="profile profile-informations">
+            <label class="information-label"> <b>Name:</b>
+                <?php echo $name; ?>
+            </label>
+            <label class="information-label"> <b>Surname:</b>
+                <?php echo $surname; ?>
+            </label>
+        </div>
+        <div class="profile profile-informations">
+            <label class="information-label"> <b>Department Name:</b>
+                <?php echo $program; ?>
+            </label>
+            <label class="information-label"> <b>Student No:</b>
+                <?php echo $studentNo; ?>
+            </label>
+        </div>
+        <div class="profile profile-informations">
+            <label class="information-label"> <b>Semester:</b>Spring - 2023 </label>
+            <label class="information-label"> <b>CGPA:</b> 3.00</label>
+        </div>
+    </div>
+    <div class="section section-course-selection">
+        <div class="card">
+            <div class="card-header">
+                <h2>Course Selection</h2>
+            </div>
+            <div class="card-body">
+                <div class="course-list">
+                    <label for="course">Select Course:</label>
+                    <select id="course" name="course">
+                        <option value="COMPUTING FOUNDATIONS">COMPUTING FOUNDATIONS</option>
+                        <option value="COMPUTER PROGRAMMING">COMPUTER PROGRAMMING</option>
+                        <option value="DATA STRUCTURES">DATA STRUCTURES</option>
+                        <option value="OPERATING SYSTEMS">OPERATING SYSTEMS</option>
+                        <option value="OBJECT-ORIENTED PROGRAMMING I">OBJECT-ORIENTED PROGRAMMING I</option>
+                        <option value="ARTIFICIAL NEURAL NETWORK">ARTIFICIAL NEURAL NETWORK </option>
+                        <option value="OBJECT-ORIENTED PROGRAMMING II">OBJECT-ORIENTED PROGRAMMING II</option>
+                        <option value="ANALYSIS OF ALGORITHMS">ANALYSIS OF ALGORITHMS</option>
+                        <option value="DATABASE MANAGEMENT SYSTEMS">DATABASE MANAGEMENT SYSTEMS</option>
+                        <option value="INTERNET PROGRAMMING">INTERNET PROGRAMMING</option>
+                    </select>
+                </div>
+            </div>
+            <div class="card-footer">
+                <form action="" method="post">
+                    <button class="btn-primary" type="button" id="addCourse" name="addCourse">Add Course</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="section section-selected-courses">
+        <div class="card">
+            <div class="card-header">
+                <h2>Selected Courses</h2>
+            </div>
+            <div class="card-body">
+                <table id="selectedCoursesTable">
+                    <tr>
+                        <th>Course Name</th>
+                        <th>Process</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="card-footer"></div>
+        </div>
+    </div>
+    <div class="section section-comment">
+        <form action="" method="post">
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Comment Section</h2>
+                </div>
+                <div class="card-body">
+                    <label for="comment">Write your comment:</label>
+                    <textarea id="comment" name="comment" style="max-width: 800px; max-height: 100px;"></textarea>
+                    <input type="hidden" name="name" value="<?php echo $name; ?> <?php echo $surname; ?>">
+                    <input type="hidden" name="email" value="doganalican46@hotmail.com">
+                    <input type="hidden" name="subject" value="About Course Registration">
+                </div>
+                <div class="card-footer">
+                    <button class="btn-primary" name="submitComment" id="submitComment" type="submit">SEND</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var selectedCourses = JSON.parse(localStorage.getItem('selectedCourses')) || [];
+        var addCourseButton = document.getElementById('addCourse');
+
+        // Load selected courses from localStorage
+        selectedCourses.forEach(function (course) {
+            var tableRow = '<tr><td>' + course + '</td><td><button class="deleteCourse btn-danger" type="button">Delete</button></td></tr>';
+            document.getElementById('selectedCoursesTable').innerHTML += tableRow;
+            var optionToRemove = document.querySelector('#course option[value="' + course + '"]');
+            if (optionToRemove) {
+                optionToRemove.remove();
+            }
+        });
+
+        addCourseButton.addEventListener('click', function () {
+            var course = document.getElementById('course').value;
+
+            if (selectedCourses.length < 5) {
+                if (selectedCourses.indexOf(course) === -1) {
+                    selectedCourses.push(course);
+                    var tableRow = '<tr><td>' + course + '</td><td><button name="deleteCourse" class="deleteCourse btn-danger" type="button">Delete</button></td></tr>';
+                    document.getElementById('selectedCoursesTable').innerHTML += tableRow;
+                    var optionToRemove = document.querySelector('#course option[value="' + course + '"]');
+                    optionToRemove.remove();
+                    saveSelectedCourses();
+                }
+            } else {
+                alert("You can only select up to 5 courses.");
+            }
+        });
+
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('deleteCourse')) {
+                var course = event.target.closest('tr').querySelector('td:first-child').textContent;
+                var index = selectedCourses.indexOf(course);
+
+                if (index !== -1) {
+                    selectedCourses.splice(index, 1);
+                    event.target.closest('tr').remove();
+                    var option = document.createElement('option');
+                    option.value = course;
+                    option.text = course;
+                    document.getElementById('course').appendChild(option);
+                    saveSelectedCourses();
+                }
+            }
+        });
+
+        // Save selected courses to localStorage
+        function saveSelectedCourses() {
+            localStorage.setItem('selectedCourses', JSON.stringify(selectedCourses));
+        }
+    });
+</script>
+
+</html>
+<!-- register.php end -->
+//======================================================================//
+
+<!-- button.css start -->
+/*CSS for buttons */
+.btn-primary {
+padding: 10px 20px;
+background-color: #007bff;
+color: #fff;
+border: none;
+border-radius: 5px;
+font-size: 16px;
+cursor: pointer;
+}
+
+.btn-primary:hover {
+background-color: white;
+color: #007bff;
+border: 1px solid #007bff;
+
+}
+
+.btn-secondary {
+padding: 10px 20px;
+background-color: #6c757d;
+color: #fff;
+border: none;
+border-radius: 5px;
+font-size: 16px;
+cursor: pointer;
+}
+
+.btn-secondary:hover {
+background-color: white;
+color: #5a6268;
+border: 1px solid #6c757d;
+
+
+}
+
+.btn-danger {
+background-color: #dc3545;
+padding: 10px 20px;
+color: #fff;
+border: none;
+border-radius: 5px;
+font-size: 16px;
+cursor: pointer;
+}
+
+.btn-danger:hover {
+background-color: white;
+color: #c82333;
+border: 1px solid #dc3545;
+}
+
+.btn-success {
+background-color: #28a745;
+padding: 10px 20px;
+color: #fff;
+border: none;
+border-radius: 5px;
+font-size: 16px;
+cursor: pointer;
+}
+
+.btn-success:hover {
+background-color: white;
+color: #218838;
+border: 1px solid #218838;
+}
+<!-- button.css end -->
+//======================================================================//
+
+<!-- colors.css start -->
+/* CSS for colors */
+.color-primary {
+color: #0d6efd;
+}
+
+.color-secondary {
+color: #6c757d;
+}
+
+.color-success {
+color: #198754;
+}
+
+.color-info {
+color: #0dcaf0;
+}
+
+.color-warning {
+color: #ffc107;
+}
+
+.color-danger {
+color: #dc3545;
+}
+
+.color-dark {
+color: #212529;
+}
+
+.color-white {
+color: #fff;
+}
+<!-- colors.css end -->
+//======================================================================//
+
+<!-- custom.css start -->
+/* CSS for custom settings */
+* {
+margin: 0;
+padding: 0;
+border: 0;
+font-size: 100%;
+font-family: inherit;
+vertical-align: baseline;
+box-sizing: border-box;
+line-height: 1;
+}
+
+body {
+font-family: Arial, sans-serif;
+font-size: 16px;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+}
+
+ul,
+ol {
+list-style: none;
+}
+
+a {
+text-decoration: none;
+}
+
+
+<!-- custom.css end -->
+//======================================================================//
+
+<!-- login_style.css start -->
+/* CSS for containers */
+.container {
+max-width: 600px;
+margin: 0 auto;
+padding: 20px;
+box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+.row {
+display: flex;
+flex-wrap: wrap;
+margin: 0 -15px;
+}
+
+.col {
+flex-basis: 0;
+flex-grow: 1;
+max-width: 100%;
+padding: 0 15px;
+}
+
+
+
+/* CSS for form items */
+.form-group {
+margin-bottom: 20px;
+}
+
+.form-control {
+width: 100%;
+padding: 10px;
+border: 1px solid #ccc;
+border-radius: 5px;
+}
+
+
+
+/* CSS for card items */
+.card-header {
+text-align: center;
+margin-bottom: 20px;
+}
+
+.card-body {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 20px;
+}
+
+.card-footer {
+text-align: center;
+}
+
+#welcome{
+font-size: 48px;
+margin-bottom: 25px;
+}
+
+.page-description{
+font-size: 22px;
+margin-bottom: 25px;
+}
+
+#loginform-tittle{
+margin-top: 10px;
+font-size: 20px;
+text-align: center;
+}
+<!-- login_style.css end -->
+
+//======================================================================//
+<!-- register_style.css start -->
+body {
+font-family: Arial, sans-serif;
+margin: 0;
+padding: 0;
+}
+
+
+.header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 10px;
+background-color: lightblue;
+}
+
+.logo img {
+width: 100px;
+height: auto;
+border-radius: 50%;
+}
+
+.page-title {
+text-align: center;
+font-size: xx-large;
+}
+
+.logout-button {
+background-color: transparent;
+border: none;
+cursor: pointer;
+font-size: 50px;
+}
+
+
+.section {
+padding: 40px;
+margin-bottom: 20px;
+}
+
+.section-profile {
+display: flex;
+align-items: center;
+}
+
+.profile .profile-image img {
+width: 100px;
+height: 100px;
+border-radius: 50%;
+}
+
+.information-label {
+display: block;
+margin-bottom: 10px;
+padding: 10px;
+}
+
+.section-course-selection .card {
+border: 1px solid #ddd;
+border-radius: 5px;
+padding: 20px;
+}
+
+.card-header {
+margin: 0;
+font-size: 24px;
+}
+
+.card-body {
+margin-top: 20px;
+}
+
+.course-list label {
+display: block;
+margin-bottom: 10px;
+}
+
+.course-list select {
+width: 100%;
+padding: 5px;
+border-radius: 3px;
+border: 1px solid #ccc;
+}
+
+.card-footer {
+margin-top: 20px;
+text-align: right;
+}
+
+
+.section-selected-courses .card {
+border: 1px solid #ddd;
+border-radius: 5px;
+padding: 20px;
+}
+
+.section-selected-courses .card-body ul {
+margin: 0;
+padding: 0;
+list-style-type: none;
+}
+
+.section-comment .card {
+border: 1px solid #ddd;
+border-radius: 5px;
+padding: 20px;
+}
+
+.section-comment label {
+display: block;
+margin-bottom: 10px;
+}
+
+.section-comment textarea {
+width: 100%;
+padding: 5px;
+border-radius: 3px;
+border: 1px solid #ccc;
+}
+
+
+#selectedCoursesTable {
+border-collapse: collapse;
+width: 100%;
+}
+
+#selectedCoursesTable th,
+#selectedCoursesTable td {
+border: 1px solid black;
+padding: 8px;
+}
+
+#selectedCoursesTable th {
+background-color: #f2f2f2;
+}
+<!-- register_style.css end -->

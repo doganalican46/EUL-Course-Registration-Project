@@ -1,0 +1,75 @@
+/* CSS for containers */
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -15px;
+}
+
+.col {
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
+  padding: 0 15px;
+}
+
+
+
+/* CSS for form items */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+
+
+/* CSS for card items */
+.card-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.card-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.card-footer {
+  text-align: center;
+}
+
+
+
+
+
+
+
+#welcome{
+  font-size: 48px;
+  margin-bottom: 25px;
+}
+
+.page-description{
+  font-size: 22px;
+  margin-bottom: 25px;
+}
+
+#loginform-tittle{
+  margin-top: 10px;
+  font-size: 20px;
+  text-align: center;
+}
